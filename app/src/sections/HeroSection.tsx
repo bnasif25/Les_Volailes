@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ArrowRight } from 'lucide-react';
+import { CONTACT } from '@/lib/contact';
 
 const PARTICLE_COUNT = 18;
 
@@ -24,12 +25,20 @@ const particles: Particle[] = Array.from({ length: PARTICLE_COUNT }, (_, i) => (
   opacity: 0.15 + Math.random() * 0.25,
 }));
 
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const isTouchDevice = () =>
+  typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
 export default function HeroSection() {
   const contentRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const [mouse, setMouse] = useState({ x: 0.5, y: 0.5 });
 
   useEffect(() => {
+    if (prefersReducedMotion() || isTouchDevice()) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       setMouse({
         x: e.clientX / window.innerWidth,
@@ -42,7 +51,7 @@ export default function HeroSection() {
   }, []);
 
   useEffect(() => {
-    if (!imageRef.current) return;
+    if (!imageRef.current || prefersReducedMotion() || isTouchDevice()) return;
     const x = (mouse.x - 0.5) * -20;
     const y = (mouse.y - 0.5) * -12;
     gsap.to(imageRef.current, {
@@ -56,6 +65,12 @@ export default function HeroSection() {
   useEffect(() => {
     if (!contentRef.current) return;
     const els = contentRef.current.querySelectorAll('.hero-animate');
+
+    if (prefersReducedMotion()) {
+      gsap.set(els, { opacity: 1, y: 0 });
+      return;
+    }
+
     gsap.fromTo(
       els,
       { opacity: 0, y: 40 },
@@ -139,9 +154,9 @@ export default function HeroSection() {
 
       <div
         ref={contentRef}
-        className="absolute bottom-0 left-0 right-0 pb-16 md:pb-24 px-6 md:px-12 lg:px-20 text-right"
+        className="absolute bottom-0 left-0 right-0 pb-20 md:pb-24 px-6 md:px-12 lg:px-20 text-left md:text-right"
       >
-        <h1 className="hero-animate font-display text-[12vw] md:text-[8vw] lg:text-[7vw] font-semibold text-ivory leading-[0.95] mb-4 opacity-0">
+        <h1 className="hero-animate font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold text-ivory leading-[0.95] mb-4 opacity-0">
           Les Volailles de
           <br />
           Notre-Dame
@@ -149,17 +164,27 @@ export default function HeroSection() {
         <p className="hero-animate font-display text-xl md:text-2xl lg:text-3xl text-ivory/80 italic mb-8 opacity-0">
           Fraîcheur locale. Qualité de confiance.
         </p>
-        <a
-          href="#produits"
-          onClick={(e) => handleScrollTo(e, '#produits')}
-          className="hero-animate inline-flex items-center justify-end gap-3 font-ui text-sm font-semibold text-ivory hover:text-brass transition-colors group opacity-0"
-        >
-          Découvrir nos produits
-          <ArrowRight
-            size={18}
-            className="transform group-hover:translate-x-1 transition-transform"
-          />
-        </a>
+        <div className="hero-animate flex flex-col sm:flex-row items-start md:items-center justify-start md:justify-end gap-4 opacity-0">
+          <a
+            href={CONTACT.whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 font-ui text-sm font-semibold px-6 py-3 bg-brass text-ink-deep rounded-full hover:bg-ivory transition-colors duration-300 min-h-[44px]"
+          >
+            Demander un devis
+          </a>
+          <a
+            href="#produits"
+            onClick={(e) => handleScrollTo(e, '#produits')}
+            className="inline-flex items-center gap-3 font-ui text-sm font-semibold text-ivory hover:text-brass transition-colors group min-h-[44px]"
+          >
+            Découvrir nos produits
+            <ArrowRight
+              size={18}
+              className="transform group-hover:translate-x-1 transition-transform"
+            />
+          </a>
+        </div>
       </div>
     </section>
   );

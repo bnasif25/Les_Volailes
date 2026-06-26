@@ -1,4 +1,5 @@
 import Logo from '@/components/Logo';
+import { CONTACT } from '@/lib/contact';
 
 const navLinks = [
   { label: 'Nos Produits', href: '#produits' },
@@ -53,14 +54,18 @@ export default function Footer() {
               Contact
             </h4>
             <ul className="space-y-2">
-              <li className="font-body text-sm text-ivory/60">
-                +230 5XXX XXXX
+              <li>
+                <a href={CONTACT.phoneLink} className="font-body text-sm text-ivory/60 hover:text-brass transition-colors">
+                  {CONTACT.phone}
+                </a>
+              </li>
+              <li>
+                <a href={CONTACT.emailLink} className="font-body text-sm text-ivory/60 hover:text-brass transition-colors">
+                  {CONTACT.email}
+                </a>
               </li>
               <li className="font-body text-sm text-ivory/60">
-                contact@volailles-notredame.mu
-              </li>
-              <li className="font-body text-sm text-ivory/60">
-                Maurice
+                {CONTACT.location}
               </li>
             </ul>
           </div>

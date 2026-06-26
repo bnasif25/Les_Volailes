@@ -4,6 +4,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 const promiseCards = [
   {
     title: 'Fraîcheur locale',
@@ -30,6 +33,15 @@ export default function AboutSection() {
     if (!section) return;
 
     const ctx = gsap.context(() => {
+      if (prefersReducedMotion()) {
+        if (imageRef.current) gsap.set(imageRef.current, { clipPath: 'inset(0 0% 0 0)' });
+        if (textRef.current) gsap.set(textRef.current, { opacity: 1, y: 0 });
+        cardsRef.current.forEach((card) => {
+          if (card) gsap.set(card, { opacity: 1, y: 0 });
+        });
+        return;
+      }
+
       // Image reveal with clip-path
       if (imageRef.current) {
         gsap.fromTo(

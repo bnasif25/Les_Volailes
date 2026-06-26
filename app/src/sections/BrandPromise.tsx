@@ -4,6 +4,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 export default function BrandPromise() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const leftPanelRef = useRef<HTMLDivElement>(null);
@@ -18,29 +21,31 @@ export default function BrandPromise() {
     if (!section || !leftPanel || !rightPanel) return;
 
     const ctx = gsap.context(() => {
-      // Parallax for left panel (moves up)
-      gsap.to(leftPanel.querySelector('.bg-image'), {
-        y: '-15%',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      });
+      if (!prefersReducedMotion()) {
+        // Parallax for left panel (moves up)
+        gsap.to(leftPanel.querySelector('.bg-image'), {
+          y: '-15%',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1,
+          },
+        });
 
-      // Parallax for right panel (moves down)
-      gsap.to(rightPanel.querySelector('.bg-geometric'), {
-        y: '10%',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      });
+        // Parallax for right panel (moves down)
+        gsap.to(rightPanel.querySelector('.bg-geometric'), {
+          y: '10%',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1,
+          },
+        });
+      }
 
       // Text reveal
       if (leftTextRef.current) {
@@ -91,7 +96,7 @@ export default function BrandPromise() {
       {/* Left Panel - Photography */}
       <div
         ref={leftPanelRef}
-        className="relative w-full lg:w-1/2 min-h-[50vh] lg:min-h-full overflow-hidden"
+        className="relative w-full lg:w-1/2 min-h-[40vh] lg:min-h-full overflow-hidden"
       >
         <div
           className="bg-image absolute top-[-10%] left-0 w-full h-[120%] bg-cover bg-center"
@@ -102,10 +107,10 @@ export default function BrandPromise() {
         />
         <div
           ref={leftTextRef}
-          className="absolute top-1/2 left-[10%] transform -translate-y-1/2 z-10"
+          className="absolute top-1/2 left-6 md:left-[10%] transform -translate-y-1/2 z-10"
         >
           <h2
-            className="font-display text-[8vw] lg:text-[4vw] font-semibold leading-none"
+            className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold leading-none"
             style={{
               color: '#F8F3E8',
               textShadow: '0 4px 24px rgba(0,0,0,0.3)',
@@ -119,7 +124,7 @@ export default function BrandPromise() {
       {/* Right Panel - Geometric */}
       <div
         ref={rightPanelRef}
-        className="relative w-full lg:w-1/2 min-h-[50vh] lg:min-h-full overflow-hidden"
+        className="relative w-full lg:w-1/2 min-h-[40vh] lg:min-h-full overflow-hidden"
         style={{ backgroundColor: '#17382B' }}
       >
         <div
@@ -134,10 +139,10 @@ export default function BrandPromise() {
         />
         <div
           ref={rightTextRef}
-          className="absolute top-1/2 right-[10%] transform -translate-y-1/2 z-10 text-right"
+          className="absolute top-1/2 right-6 md:right-[10%] transform -translate-y-1/2 z-10 text-right"
         >
           <h2
-            className="font-ui text-[6vw] lg:text-[3vw] font-medium leading-tight"
+            className="font-display text-3xl md:text-4xl lg:text-5xl font-medium leading-tight"
             style={{ color: '#F8F3E8' }}
           >
             Conçues pour<br />les professionnels.

@@ -5,6 +5,9 @@ import { Building2, UtensilsCrossed, ShoppingCart, Send, CheckCircle } from 'luc
 
 gsap.registerPlugin(ScrollTrigger);
 
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 const clientTypes = [
   { icon: Building2, label: 'Hôtels' },
   { icon: UtensilsCrossed, label: 'Restaurants' },
@@ -38,38 +41,46 @@ export default function B2BSection() {
 
     const ctx = gsap.context(() => {
       if (leftRef.current) {
-        gsap.fromTo(
-          leftRef.current,
-          { opacity: 0, x: -50 },
-          {
-            opacity: 1,
-            x: 0,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 60%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        );
+        if (prefersReducedMotion()) {
+          gsap.set(leftRef.current, { opacity: 1, x: 0 });
+        } else {
+          gsap.fromTo(
+            leftRef.current,
+            { opacity: 0, x: -50 },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 1,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 60%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          );
+        }
       }
       if (rightRef.current) {
-        gsap.fromTo(
-          rightRef.current,
-          { opacity: 0, x: 50 },
-          {
-            opacity: 1,
-            x: 0,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 60%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        );
+        if (prefersReducedMotion()) {
+          gsap.set(rightRef.current, { opacity: 1, x: 0 });
+        } else {
+          gsap.fromTo(
+            rightRef.current,
+            { opacity: 0, x: 50 },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 1,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 60%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          );
+        }
       }
     }, section);
 

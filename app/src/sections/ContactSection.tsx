@@ -2,8 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Phone, Mail, MapPin, MessageCircle, Send, CheckCircle } from 'lucide-react';
+import { CONTACT } from '@/lib/contact';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function ContactSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -24,39 +28,47 @@ export default function ContactSection() {
 
     const ctx = gsap.context(() => {
       if (formRef.current) {
-        gsap.fromTo(
-          formRef.current,
-          { opacity: 0, y: 40 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 60%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        );
+        if (prefersReducedMotion()) {
+          gsap.set(formRef.current, { opacity: 1, y: 0 });
+        } else {
+          gsap.fromTo(
+            formRef.current,
+            { opacity: 0, y: 40 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 60%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          );
+        }
       }
       if (infoRef.current) {
-        gsap.fromTo(
-          infoRef.current,
-          { opacity: 0, y: 40 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            delay: 0.2,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 60%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        );
+        if (prefersReducedMotion()) {
+          gsap.set(infoRef.current, { opacity: 1, y: 0 });
+        } else {
+          gsap.fromTo(
+            infoRef.current,
+            { opacity: 0, y: 40 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              delay: 0.2,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 60%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          );
+        }
       }
     }, section);
 
@@ -81,8 +93,8 @@ export default function ContactSection() {
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-ivory mb-4">
             Contactez Les Volailles de Notre-Dame
           </h2>
-          <p className="font-body text-base md:text-lg text-ivory/60 max-w-xl mx-auto">
-            Besoin d&apos;un approvisionnement r&eacute;gulier ? Parlons-en.
+          <p className="font-body text-base md:text-lg text-ivory/70 max-w-xl mx-auto">
+            Besoin d&apos;un approvisionnement régulier ? Parlons-en.
           </p>
         </div>
 
@@ -95,12 +107,15 @@ export default function ContactSection() {
                   <Phone size={18} className="text-brass" />
                 </span>
                 <div>
-                  <span className="font-ui text-sm font-semibold text-ivory/80 block mb-1">
-                    T&eacute;l&eacute;phone
+                  <span className="font-ui text-sm font-semibold text-ivory/90 block mb-1">
+                    Téléphone
                   </span>
-                  <span className="font-body text-sm text-ivory/60">
-                    +230 5XXX XXXX
-                  </span>
+                  <a
+                    href={CONTACT.phoneLink}
+                    className="font-body text-sm text-ivory/70 hover:text-brass transition-colors"
+                  >
+                    {CONTACT.phone}
+                  </a>
                 </div>
               </div>
 
@@ -109,12 +124,15 @@ export default function ContactSection() {
                   <Mail size={18} className="text-brass" />
                 </span>
                 <div>
-                  <span className="font-ui text-sm font-semibold text-ivory/80 block mb-1">
+                  <span className="font-ui text-sm font-semibold text-ivory/90 block mb-1">
                     Email
                   </span>
-                  <span className="font-body text-sm text-ivory/60">
-                    contact@volailles-notredame.mu
-                  </span>
+                  <a
+                    href={CONTACT.emailLink}
+                    className="font-body text-sm text-ivory/70 hover:text-brass transition-colors"
+                  >
+                    {CONTACT.email}
+                  </a>
                 </div>
               </div>
 
@@ -123,21 +141,21 @@ export default function ContactSection() {
                   <MapPin size={18} className="text-brass" />
                 </span>
                 <div>
-                  <span className="font-ui text-sm font-semibold text-ivory/80 block mb-1">
+                  <span className="font-ui text-sm font-semibold text-ivory/90 block mb-1">
                     Localisation
                   </span>
-                  <span className="font-body text-sm text-ivory/60">
-                    Maurice
+                  <span className="font-body text-sm text-ivory/70">
+                    {CONTACT.location}
                   </span>
                 </div>
               </div>
 
               <div className="pt-6 border-t border-ivory/10">
                 <a
-                  href="https://wa.me/2305XXXXXXX"
+                  href={CONTACT.whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-brass text-ink-deep font-ui text-sm font-semibold rounded-full hover:bg-ivory transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-brass text-ink-deep font-ui text-sm font-semibold rounded-full hover:bg-ivory transition-colors min-h-[44px]"
                 >
                   <MessageCircle size={18} />
                   Commander via WhatsApp
@@ -153,10 +171,10 @@ export default function ContactSection() {
                 <div className="flex flex-col items-center justify-center py-16 text-center">
                   <CheckCircle size={56} className="text-brass mb-4" />
                   <h3 className="font-ui text-xl font-semibold text-ivory mb-2">
-                    Message envoy&eacute;
+                    Message envoyé
                   </h3>
-                  <p className="font-body text-sm text-ivory/60">
-                    Nous vous r&eacute;pondrons dans les plus brefs d&eacute;lais.
+                  <p className="font-body text-sm text-ivory/70">
+                    Nous vous répondrons dans les plus brefs délais.
                   </p>
                 </div>
               ) : (
@@ -168,7 +186,7 @@ export default function ContactSection() {
                       required
                       value={formData.nom}
                       onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
-                      className="w-full px-4 py-3.5 bg-ivory/10 border border-ivory/20 rounded-none font-body text-sm text-ivory placeholder:text-ivory/40 focus:outline-none focus:border-brass transition-colors"
+                      className="w-full px-4 py-3.5 bg-ivory/10 border border-ivory/20 rounded-none font-body text-sm text-ivory placeholder:text-ivory/60 focus:outline-none focus:border-brass transition-colors min-h-[44px]"
                     />
                     <input
                       type="email"
@@ -176,27 +194,27 @@ export default function ContactSection() {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3.5 bg-ivory/10 border border-ivory/20 rounded-none font-body text-sm text-ivory placeholder:text-ivory/40 focus:outline-none focus:border-brass transition-colors"
+                      className="w-full px-4 py-3.5 bg-ivory/10 border border-ivory/20 rounded-none font-body text-sm text-ivory placeholder:text-ivory/60 focus:outline-none focus:border-brass transition-colors min-h-[44px]"
                     />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <input
                       type="tel"
-                      placeholder="T&eacute;l&eacute;phone"
+                      placeholder="Téléphone"
                       value={formData.telephone}
                       onChange={(e) => setFormData({ ...formData, telephone: e.target.value })}
-                      className="w-full px-4 py-3.5 bg-ivory/10 border border-ivory/20 rounded-none font-body text-sm text-ivory placeholder:text-ivory/40 focus:outline-none focus:border-brass transition-colors"
+                      className="w-full px-4 py-3.5 bg-ivory/10 border border-ivory/20 rounded-none font-body text-sm text-ivory placeholder:text-ivory/60 focus:outline-none focus:border-brass transition-colors min-h-[44px]"
                     />
                     <select
                       value={formData.type}
                       onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                      className="w-full px-4 py-3.5 bg-ivory/10 border border-ivory/20 rounded-none font-body text-sm text-ivory focus:outline-none focus:border-brass transition-colors"
-                      style={{ color: formData.type ? '#F8F3E8' : 'rgba(248,243,232,0.4)' }}
+                      className="w-full px-4 py-3.5 bg-ivory/10 border border-ivory/20 rounded-none font-body text-sm text-ivory focus:outline-none focus:border-brass transition-colors min-h-[44px]"
+                      style={{ color: formData.type ? '#F8F3E8' : 'rgba(248,243,232,0.6)' }}
                     >
                       <option value="" style={{ color: '#20201E' }}>Type de client</option>
                       <option value="particulier" style={{ color: '#20201E' }}>Particulier</option>
                       <option value="restaurant" style={{ color: '#20201E' }}>Restaurant</option>
-                      <option value="hotel" style={{ color: '#20201E' }}>H&ocirc;tel</option>
+                      <option value="hotel" style={{ color: '#20201E' }}>Hôtel</option>
                       <option value="commerce" style={{ color: '#20201E' }}>Commerce</option>
                       <option value="distributeur" style={{ color: '#20201E' }}>Distributeur</option>
                     </select>
@@ -207,11 +225,11 @@ export default function ContactSection() {
                     required
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-4 py-3.5 bg-ivory/10 border border-ivory/20 rounded-none font-body text-sm text-ivory placeholder:text-ivory/40 focus:outline-none focus:border-brass transition-colors resize-none"
+                    className="w-full px-4 py-3.5 bg-ivory/10 border border-ivory/20 rounded-none font-body text-sm text-ivory placeholder:text-ivory/60 focus:outline-none focus:border-brass transition-colors resize-none"
                   />
                   <button
                     type="submit"
-                    className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-brass text-ink-deep font-ui text-sm font-semibold hover:bg-ivory transition-colors"
+                    className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-brass text-ink-deep font-ui text-sm font-semibold hover:bg-ivory transition-colors min-h-[44px]"
                   >
                     <Send size={16} />
                     Envoyer la demande

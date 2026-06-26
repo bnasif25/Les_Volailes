@@ -120,7 +120,7 @@ export default function Products() {
               ref={(el) => {
                 if (el) cardsRef.current[i] = el;
               }}
-              className="group cursor-pointer opacity-0"
+              className="group opacity-0"
             >
               <div className="relative overflow-hidden rounded-xl mb-4 aspect-[4/3]">
                 <img
@@ -133,13 +133,9 @@ export default function Products() {
               <h3 className="font-ui text-lg font-semibold text-charcoal mb-2 group-hover:text-ink-deep transition-colors">
                 {product.name}
               </h3>
-              <p className="font-body text-sm text-clay leading-relaxed mb-3">
+              <p className="font-body text-sm text-clay leading-relaxed">
                 {product.description}
               </p>
-              <span className="inline-flex items-center gap-1 font-ui text-sm font-medium text-ink-deep group-hover:text-brass transition-colors">
-                En savoir plus
-                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-              </span>
             </div>
           ))}
         </div>

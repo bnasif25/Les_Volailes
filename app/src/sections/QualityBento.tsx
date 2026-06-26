@@ -5,6 +5,9 @@ import { ShieldCheck, Thermometer, Truck, Leaf } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 const processSteps = [
   { num: '01', title: 'Élevage', desc: 'Soins quotidiens et environnement contrôlé' },
   { num: '02', title: 'Sélection', desc: 'Contrôle rigoureux de chaque volaille' },
@@ -31,6 +34,10 @@ export default function QualityBento() {
     const ctx = gsap.context(() => {
       bricksRef.current.forEach((brick, i) => {
         if (!brick) return;
+        if (prefersReducedMotion()) {
+          gsap.set(brick, { opacity: 1, y: 0 });
+          return;
+        }
         gsap.fromTo(
           brick,
           { opacity: 0, y: 30 },
@@ -180,32 +187,37 @@ export default function QualityBento() {
           <h3 className="font-display text-2xl md:text-3xl font-semibold text-ink-deep mb-8 md:mb-12 text-center">
             Notre processus
           </h3>
-          <div className="flex flex-col md:flex-row items-stretch gap-4 md:gap-0">
-            {processSteps.map((step, i) => (
-              <div
-                key={step.num}
-                ref={(el) => { if (el) bricksRef.current[5 + i] = el; }}
-                className="flex-1 relative opacity-0 group"
-              >
-                {/* Connector line */}
-                {i < processSteps.length - 1 && (
-                  <div className="hidden md:block absolute top-8 left-[60%] right-0 h-[2px] bg-clay/20" />
-                )}
-                <div className="flex md:flex-col items-center md:items-start gap-4 md:gap-3 p-4 md:p-6">
-                  <span className="font-display text-3xl md:text-4xl font-bold text-brass/40 group-hover:text-brass transition-colors">
-                    {step.num}
-                  </span>
-                  <div>
-                    <h4 className="font-ui text-base font-semibold text-charcoal mb-1">
-                      {step.title}
-                    </h4>
-                    <p className="font-body text-sm text-clay hidden md:block">
-                      {step.desc}
-                    </p>
+          <div className="relative">
+            {/* Mobile vertical connector */}
+            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-[2px] bg-clay/20 md:hidden" />
+
+            <div className="flex flex-col md:flex-row items-stretch gap-6 md:gap-0">
+              {processSteps.map((step, i) => (
+                <div
+                  key={step.num}
+                  ref={(el) => { if (el) bricksRef.current[5 + i] = el; }}
+                  className="flex-1 relative opacity-0 group"
+                >
+                  {/* Desktop connector line */}
+                  {i < processSteps.length - 1 && (
+                    <div className="hidden md:block absolute top-8 left-[60%] right-0 h-[2px] bg-clay/20" />
+                  )}
+                  <div className="flex md:flex-col items-start md:items-center gap-4 md:gap-3 p-4 md:p-6 pl-14 md:pl-6">
+                    <span className="absolute left-2 md:static md:mb-2 w-8 h-8 md:w-auto md:h-auto rounded-full md:rounded-none bg-ivory md:bg-transparent border-2 border-brass/30 md:border-0 flex items-center justify-center font-display text-lg md:text-3xl lg:text-4xl font-bold text-brass/70 md:text-brass/40 group-hover:text-brass transition-colors">
+                      {step.num}
+                    </span>
+                    <div>
+                      <h4 className="font-ui text-base font-semibold text-charcoal mb-1">
+                        {step.title}
+                      </h4>
+                      <p className="font-body text-sm text-clay">
+                        {step.desc}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>

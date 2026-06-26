@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-ink-deep: #17382B;
+    --color-ivory: #F8F3E8;
+    --color-charcoal: #20201E;
+    --color-brass: #B88A36;
+    --color-clay: #8D7461;
+    --color-sage: #A7B89A;
+    --color-mauritius: #4E9AA4;
+    --color-glass: rgba(248, 243, 232, 0.6);
+
+    --background: 43 33% 94%;
+    --foreground: 40 4% 12%;
+    --card: 43 33% 94%;
+    --card-foreground: 40 4% 12%;
+    --popover: 43 33% 94%;
+    --popover-foreground: 40 4% 12%;
+    --primary: 158 43% 16%;
+    --primary-foreground: 43 33% 94%;
+    --secondary: 100 14% 67%;
+    --secondary-foreground: 40 4% 12%;
+    --muted: 30 16% 46%;
+    --muted-foreground: 30 16% 46%;
+    --accent: 41 54% 47%;
+    --accent-foreground: 43 33% 94%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 30 16% 46%;
+    --input: 30 16% 46%;
+    --ring: 158 43% 16%;
+    --radius: 0.625rem;
+  }
+
+  body {
+    @apply bg-[#F8F3E8] text-[#20201E] antialiased;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant Garamond', serif;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .font-ui {
+    font-family: 'Manrope', sans-serif;
+  }
+  .font-body {
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: #B88A36;
+  color: #F8F3E8;
+}
+
+/* Hero sunrise ambience */
+@keyframes hero-ken-burns {
+  0% {
+    transform: scale(1.05) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.12) translate(-1%, -1%);
+  }
+  100% {
+    transform: scale(1.05) translate(0, 0);
+  }
+}
+
+@keyframes hero-light-sweep {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes hero-float {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.3;
+  }
+  88% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-18vh) translateX(4vw);
+    opacity: 0;
+  }
+}
+
+.animate-hero-ken-burns {
+  animation: hero-ken-burns 24s ease-in-out infinite;
+}
+
+.animate-hero-light-sweep {
+  animation: hero-light-sweep 10s ease-in-out infinite;
+}
+
+.animate-hero-float {
+  animation-name: hero-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}

@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-ink-deep: #17382B;
+    --color-ivory: #F8F3E8;
+    --color-charcoal: #20201E;
+    --color-brass: #B88A36;
+    --color-clay: #8D7461;
+    --color-sage: #A7B89A;
+    --color-mauritius: #4E9AA4;
+    --color-glass: rgba(248, 243, 232, 0.72);
+
+    --background: 43 33% 94%;
+    --foreground: 40 4% 12%;
+    --card: 43 33% 94%;
+    --card-foreground: 40 4% 12%;
+    --popover: 43 33% 94%;
+    --popover-foreground: 40 4% 12%;
+    --primary: 158 43% 16%;
+    --primary-foreground: 43 33% 94%;
+    --secondary: 100 14% 67%;
+    --secondary-foreground: 40 4% 12%;
+    --muted: 30 16% 46%;
+    --muted-foreground: 30 16% 46%;
+    --accent: 41 54% 47%;
+    --accent-foreground: 43 33% 94%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 30 16% 46%;
+    --input: 30 16% 46%;
+    --ring: 158 43% 16%;
+    --radius: 0.625rem;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-ivory text-charcoal antialiased;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  /* Accessible focus ring */
+  :focus-visible {
+    @apply outline-none ring-2 ring-brass ring-offset-2 ring-offset-ivory;
+  }
+
+  /* Respect reduced motion globally */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .font-ui {
+    font-family: 'Manrope', sans-serif;
+  }
+  .font-body {
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Typography scale helpers */
+  .text-display-lg {
+    @apply font-display text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tight leading-[1.05];
+  }
+  .text-display {
+    @apply font-display text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.1];
+  }
+  .text-display-sm {
+    @apply font-display text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight leading-[1.15];
+  }
+  .text-body-lg {
+    @apply font-body text-base md:text-lg text-charcoal/70 leading-relaxed;
+  }
+  .text-body {
+    @apply font-body text-sm md:text-base text-charcoal/70 leading-relaxed;
+  }
+  .text-ui {
+    @apply font-ui text-xs font-semibold tracking-[0.18em] uppercase;
+  }
+
+  /* Constrained readable width */
+  .prose-narrow {
+    @apply max-w-[65ch];
+  }
+}
+
+::selection {
+  background-color: #B88A36;
+  color: #F8F3E8;
+}
